@@ -1,0 +1,19 @@
+.lif-form__submit { appearance: button; background-color: #1899D6; border: solid transparent; border-radius: 16px; border-width: 0 0 4px; box-sizing: border-box; color: #FFFFFF; cursor: pointer; display: inline-block; font-family: din-round,sans-serif; font-size: 15px; font-weight: 700; letter-spacing: .8px; line-height: 20px; margin: 0; outline: none; overflow: visible; padding: 13px 16px; text-align: center; text-transform: uppercase; touch-action: manipulation; transform: translateZ(0); transition: filter .2s; user-select: none; -webkit-user-select: none; vertical-align: middle; white-space: nowrap; width: 100%; }
+.lif-form__submit::after { background-clip: padding-box; background-color: #1CB0F6; border: solid transparent; border-radius: 16px; border-width: 0 0 4px; bottom: -4px; content: ""; left: 0; position: absolute; right: 0; top: 0; z-index: -1; }
+.lif-form__submit::main, .lif-form__submit::focus { user-select: auto; }
+.lif-form__submit:hover:not(:disabled) { filter: brightness(1.1); -webkit-filter: brightness(1.1); }
+.lif-form__submit:disabled { cursor: auto; }
+.lif-form h2 { margin-top: 1rem; }
+.lif-form form .float-label-field { border: none; outline: none; position: relative; margin: 0 0 20px 0; padding: 0; box-sizing: border-box; }
+.lif-form form .float-label-field.focus label { color: #1899D6; }
+.lif-form form .float-label-field.focus input { border: none; border-bottom: solid 1px #1899D6; }
+.lif-form form .float-label-field.float label { opacity: 1; top: -8px; font-size: 80%; transition: all 0.2s ease; font-weight: bold; }
+.lif-form form .float-label-field label { opacity: 0.5; position: absolute; top: 10px; left: 0px; transition: all 0.2s ease; font-size: 18px; }
+.lif-form form .float-label-field input, .lif-form form .float-label-field select { width: 100%; border: none; outline: none; padding: 8px 5px 8px 0px; width: 100%; font-size: 18px; border-bottom: solid 1px #efefef; }
+.lif-form form .float-label-field input:focus, .lif-form form .float-label-field select:focus { outline: none; box-shadow: none; }
+.lif-form table tbody tr { border-bottom: none; }
+.lif-form__progressbar { background-color: #0d4c6a; border-radius: 13px; padding: 3px; }
+.lif-form__progressbar > div { background-color: #1CB0F6; width: 0%; height: 20px; border-radius: 10px; }
+.lif-form__stats { text-align: center; }
+
+/*# sourceMappingURL=main.css.map */
