@@ -1,16 +1,16 @@
 "use strict";
 
-jQuery(document).ready(function($) {
-    $('input').on('focus', function() {
+jQuery(document).ready(function ($) {
+    $('input').on('focus', function () {
         $(this).closest('.float-label-field').addClass('float focus');
-      });
-      
-    $('input').on('blur', function() {
-    var $parent = $(this).closest('.float-label-field');
-    $parent.removeClass('focus');
-    if (!$(this).val()) {
-        $parent.removeClass('float');
-    }
+    });
+
+    $('input').on('blur', function () {
+        var $parent = $(this).closest('.float-label-field');
+        $parent.removeClass('focus');
+        if (!$(this).val()) {
+            $parent.removeClass('float');
+        }
     });
 
     let total_signed = $('.lif-form__signed').text();
@@ -19,9 +19,9 @@ jQuery(document).ready(function($) {
     let percentage_raw = LIFcalculatePercentage(total_signed, total_target);
 
     $('.lif-form__progressbar div').width(percentage_raw + '%');
-    
-    
-    $('.lif-form__form').on('submit', function(e) {
+
+
+    $('.lif-form__form').on('submit', function (e) {
         e.preventDefault();
         var formData = $(this).serialize();
 
@@ -32,12 +32,14 @@ jQuery(document).ready(function($) {
                 action: 'lif_record',
                 formData: formData
             },
-            success: function(response) {
-                $('#lif_' + response.data.form_id)[0].reset();
-                let current_count = parseInt($('#lif_' + response.data.form_id + ' .lif-form__signed').text());
-                $('#lif_' + response.data.form_id + ' .lif-form__signed').text(++current_count);
+            success: function (response) {
+                if (response.success && response.data.result) {
+                    $('#lif_' + response.data.form_id)[0].reset();
+                    let current_count = parseInt($('#lif_' + response.data.form_id + ' .lif-form__signed').text());
+                    $('#lif_' + response.data.form_id + ' .lif-form__signed').text(++current_count);
+                }
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.log(xhr.responseText);
             }
         });

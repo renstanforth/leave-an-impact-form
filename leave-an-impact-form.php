@@ -1,10 +1,13 @@
 <?php
 /**
  * Plugin Name: Leave an Impact Form
+ * Plugin URI:  https://www.renstanforth.com
  * Description: This is a simple petition form plugin designed for WordPress to collect signatures and feedback from their supporters/audience.
- * Version: 0.1.0
  * Author: Ren Stanforth
  * Author URI: https://www.renstanforth.com/
+ * Text Domain: lif-plugin
+ * Domain Path:     /languages
+ * Version: 0.1.1
  */
 
 // Plugin constants
@@ -88,7 +91,7 @@ class LIF_plugin
     {
         $post = $this->get_custom_post_details($atts['id']);
         $form_template = '<h2 class="lif-form__label">' . $post['title'] . '</h2><div class="lif-form"><form class="lif-form__form" id="lif_' . $atts['id'] . '" data-id="' . $atts['id'] . '"><input type="hidden" name="lif-form_id" value="' . $atts['id'] . '"/>';
-
+        $form_template .= wp_nonce_field('lif_form_nonce', 'lif_form_nonce');
         $signatures_table = new SignaturesTable();
         $total_signatures = $signatures_table->getTotalByID($atts['id']);
 
@@ -374,6 +377,15 @@ class LIF_plugin
         parse_str($raw_data, $parsed_data);
 
         $sanitized_data = array_map('strip_tags', $parsed_data);
+
+        if (!isset($sanitized_data['lif_form_nonce']) || !wp_verify_nonce($sanitized_data['lif_form_nonce'], 'lif_form_nonce')) {
+            $error = new WP_Error('001', 'Entry failed because wp_nonce can NOT be verified.', 'lif-plugin');
+            wp_send_json_error($error);
+            wp_die();
+        }
+
+        unset($sanitized_data['lif_form_nonce']);
+        unset($sanitized_data['_wp_http_referer']);
 
         $signatures_table = new SignaturesTable();
         $result = $signatures_table->insert($sanitized_data);
