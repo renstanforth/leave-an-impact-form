@@ -23,6 +23,7 @@ jQuery(document).ready(function ($) {
 
     $('.lif-form__form').on('submit', function (e) {
         e.preventDefault();
+
         var formData = $(this).serialize();
 
         $.ajax({
@@ -37,6 +38,11 @@ jQuery(document).ready(function ($) {
                     $('#lif_' + response.data.form_id)[0].reset();
                     let current_count = parseInt($('#lif_' + response.data.form_id + ' .lif-form__signed').text());
                     $('#lif_' + response.data.form_id + ' .lif-form__signed').text(++current_count);
+
+                    // reset recaptcha
+                    if (typeof grecaptcha !== 'undefined') {
+                        grecaptcha.reset();
+                    }
                 }
             },
             error: function (xhr, status, error) {
@@ -44,6 +50,24 @@ jQuery(document).ready(function ($) {
             }
         });
     });
+
+    function rescaleCaptcha(){
+        var width = $('.lif-form__recaptpcha').parent().width();
+        var scale;
+        if (width < 302) {
+            scale = width / 302;
+        } else{
+            scale = 1.0; 
+        }
+    
+        $('.lif-form__recaptpcha').css('transform', 'scale(' + scale + ')');
+        $('.lif-form__recaptpcha').css('-webkit-transform', 'scale(' + scale + ')');
+        $('.lif-form__recaptpcha').css('transform-origin', '0 0');
+        $('.lif-form__recaptpcha').css('-webkit-transform-origin', '0 0');
+    }
+    
+    rescaleCaptcha();
+    $( window ).resize(function() { rescaleCaptcha(); });
 });
 
 function LIFcalculatePercentage(numStr, totalStr) {
