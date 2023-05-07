@@ -28,6 +28,7 @@
         vertical-align: middle;
         white-space: nowrap;
         width: 100%;
+        margin-top: 1rem;
 
         &::after {
             background-clip: padding-box;
@@ -141,5 +142,11 @@
 
     &__stats {
         text-align: center;
+    }
+
+    &__recaptpcha {
+        div:first-child {
+            margin: auto;
+        }
     }
 }

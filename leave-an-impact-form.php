@@ -7,7 +7,7 @@
  * Author URI: https://www.renstanforth.com/
  * Text Domain: lif-plugin
  * Domain Path:     /languages
- * Version: 0.1.1
+ * Version: 0.1.2
  */
 
 // Plugin constants
@@ -85,6 +85,9 @@ class LIF_plugin
         wp_enqueue_script('lif-plugin-script', LIF_PLUGIN_URL . 'assets/js/lif-main.js', array('jquery'), LIF_PLUGIN_VERSION, true);
         wp_localize_script('lif-plugin-script', 'lif_ajaxurl', admin_url('admin-ajax.php'));
         wp_enqueue_style('lif-plugin-styles', plugin_dir_url(__FILE__) . 'assets/css/main.css', array(), LIF_PLUGIN_VERSION, 'all');
+        if (!wp_script_is('google-recaptcha', 'enqueued')) {
+            wp_enqueue_script('google-recaptcha', 'https://www.google.com/recaptcha/api.js', array(), null, true);
+        }
     }
 
     public function lif_shortcode($atts)
@@ -138,7 +141,8 @@ class LIF_plugin
                 $form_template .= '<div class="lif-form__row">' . $input_template . '</div>';
             }
         }
-
+        $site_key = $this->options['site_key'] ?? '';
+        $form_template .= '<div class="g-recaptcha lif-form__recaptpcha" data-sitekey="' . $site_key . '"></div>';
         $form_template .= '<div class="lif-form__row"><button class="lif-form__submit" role="button">Submit</button></div></form></div>';
 
         return $form_template;
@@ -322,7 +326,7 @@ class LIF_plugin
                 <?php echo esc_html__('Settings', 'lif-plugin'); ?>
             </h1>
             <h2>
-                <?php echo esc_html__('Google reCAPTCHA v3', 'lif-plugin'); ?>
+                <?php echo esc_html__('Google reCAPTCHA v2', 'lif-plugin'); ?>
             </h2>
             <form method="post" action="options.php">
                 <?php settings_fields('lif-custom-post-settings-group'); ?>
@@ -384,14 +388,39 @@ class LIF_plugin
             wp_die();
         }
 
-        unset($sanitized_data['lif_form_nonce']);
-        unset($sanitized_data['_wp_http_referer']);
+        $verification_res = $this->lif_check_recaptcha($sanitized_data['g-recaptcha-response']);
 
-        $signatures_table = new SignaturesTable();
-        $result = $signatures_table->insert($sanitized_data);
+        if ($verification_res->success == true) {
+            unset($sanitized_data['lif_form_nonce']);
+            unset($sanitized_data['_wp_http_referer']);
+            unset($sanitized_data['g-recaptcha-response']);
 
-        wp_send_json_success(array('result' => $result, 'form_id' => $sanitized_data['form_id']));
+            $signatures_table = new SignaturesTable();
+            $result = $signatures_table->insert($sanitized_data);
+
+            wp_send_json_success(array('result' => $result, 'form_id' => $sanitized_data['form_id']));
+        } else {
+            $error = new WP_Error('002', 'Entry failed because reCAPTCHA has this error: ' . $verification_res->{'error-codes'}[0], 'lif-plugin');
+            wp_send_json_error($error);
+        }
+
         wp_die();
+    }
+
+    private function lif_check_recaptcha($res)
+    {
+        $reCAHTCHA_res = $res;
+        $remote_ip = $_SERVER['REMOTE_ADDR'];
+        $url = "https://www.google.com/recaptcha/api/siteverify?secret=" . $this->options['secret_key'] . "&response=" . $reCAHTCHA_res . "&remoteip=" . $remote_ip;
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $verification_res = curl_exec($curl);
+        curl_close($curl);
+
+        $verification_res = json_decode($verification_res);
+
+        return $verification_res;
     }
 }
 

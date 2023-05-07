@@ -9,7 +9,8 @@ This is a simple petition form plugin designed for WordPress to collect signatur
 
 
 #### ToDo
-- encorporate google reCAPTCHA v3
 - add loader when form is in the process of submitting
+- display error messages
+- add thank you message after successful submission
 - add latest signatures section
 - add feature that enables admin to download data in .CSV format
