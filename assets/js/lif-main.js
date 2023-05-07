@@ -26,6 +26,12 @@ jQuery(document).ready(function ($) {
 
         var formData = $(this).serialize();
 
+        $('.lif-form__submit').prop('disabled', true);
+        $(".lif-form__submit__loader").show();
+        $(".lif-form__submit__label").hide();
+        $('.lif-form__msg').text('');
+        $('.lif-form__msg').removeClass(['lif-form__msg__success', 'lif-form__msg__error']);
+
         $.ajax({
             type: 'POST',
             url: lif_ajaxurl,
@@ -43,11 +49,23 @@ jQuery(document).ready(function ($) {
                     if (typeof grecaptcha !== 'undefined') {
                         grecaptcha.reset();
                     }
+
+                    $('.lif-form__msg').append('Thanks for submitting!');
+                    $('.lif-form__msg').show().delay(5000).fadeOut(500);
+                    $('.lif-form__msg').addClass('lif-form__msg__success');
+                } else {
+                    $('.lif-form__msg').append(response.data[0].message);
+                    $('.lif-form__msg').show();
+                    $('.lif-form__msg').addClass('lif-form__msg__error');
                 }
             },
             error: function (xhr, status, error) {
                 console.log(xhr.responseText);
             }
+        }).done(function() {
+            $(".lif-form__submit__loader").hide();
+            $('.lif-form__submit').prop('disabled', false);
+            $(".lif-form__submit__label").show();
         });
     });
 
