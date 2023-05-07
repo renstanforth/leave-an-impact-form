@@ -8,7 +8,6 @@
         box-sizing: border-box;
         color: #FFFFFF;
         cursor: pointer;
-        display: inline-block;
         font-family: din-round,sans-serif;
         font-size: 15px;
         font-weight: 700;
@@ -29,6 +28,11 @@
         white-space: nowrap;
         width: 100%;
         margin-top: 1rem;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
 
         &::after {
             background-clip: padding-box;
@@ -57,6 +61,13 @@
 
         &:disabled {
             cursor: auto;
+        }
+
+        &__loader {
+            position: absolute;
+            &.hidden {
+                display: none;
+            }
         }
     }
 
@@ -144,9 +155,26 @@
         text-align: center;
     }
 
+    &__row {
+        margin-top: 1rem;
+    }
+
     &__recaptpcha {
         div:first-child {
             margin: auto;
+        }
+    }
+
+    &__msg {
+        text-align: center;
+        margin-top: 1rem;
+        font-weight: bold;
+        &__success {
+            color: #78c800;
+        }
+
+        &__error {
+            color: #eb4b4d;
         }
     }
 }

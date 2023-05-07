@@ -7,11 +7,11 @@
  * Author URI: https://www.renstanforth.com/
  * Text Domain: lif-plugin
  * Domain Path:     /languages
- * Version: 0.1.2
+ * Version: 0.1.3
  */
 
 // Plugin constants
-define('LIF_PLUGIN_VERSION', '0.1.0');
+define('LIF_PLUGIN_VERSION', '0.1.3');
 define('LIF_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('LIF_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -92,6 +92,9 @@ class LIF_plugin
 
     public function lif_shortcode($atts)
     {
+        
+        require_once LIF_PLUGIN_DIR . 'inc/svgs.php';
+
         $post = $this->get_custom_post_details($atts['id']);
         $form_template = '<h2 class="lif-form__label">' . $post['title'] . '</h2><div class="lif-form"><form class="lif-form__form" id="lif_' . $atts['id'] . '" data-id="' . $atts['id'] . '"><input type="hidden" name="lif-form_id" value="' . $atts['id'] . '"/>';
         $form_template .= wp_nonce_field('lif_form_nonce', 'lif_form_nonce');
@@ -143,7 +146,18 @@ class LIF_plugin
         }
         $site_key = $this->options['site_key'] ?? '';
         $form_template .= '<div class="g-recaptcha lif-form__recaptpcha" data-sitekey="' . $site_key . '"></div>';
-        $form_template .= '<div class="lif-form__row"><button class="lif-form__submit" role="button">Submit</button></div></form></div>';
+        $form_template .= '<div class="lif-form__msg hidden"></div>';
+        $form_template .= '<div class="lif-form__row"><button class="lif-form__submit" role="button">
+                        <span class="lif-form__submit__label">Submit</span>
+                        <span class="lif-form__submit__loader hidden">
+                            <svg viewBox="0 0 100 50" version="1.1" style="fill:#ffffff; width:50px;">
+                                <use xlink:href="#lif_loader"></use>
+                            </svg>
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>';
 
         return $form_template;
     }

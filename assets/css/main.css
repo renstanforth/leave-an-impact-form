@@ -1,8 +1,10 @@
-.lif-form__submit { appearance: button; background-color: #1899D6; border: solid transparent; border-radius: 16px; border-width: 0 0 4px; box-sizing: border-box; color: #FFFFFF; cursor: pointer; display: inline-block; font-family: din-round,sans-serif; font-size: 15px; font-weight: 700; letter-spacing: .8px; line-height: 20px; margin: 0; outline: none; overflow: visible; padding: 13px 16px; text-align: center; text-transform: uppercase; touch-action: manipulation; transform: translateZ(0); transition: filter .2s; user-select: none; -webkit-user-select: none; vertical-align: middle; white-space: nowrap; width: 100%; margin-top: 1rem; }
+.lif-form__submit { appearance: button; background-color: #1899D6; border: solid transparent; border-radius: 16px; border-width: 0 0 4px; box-sizing: border-box; color: #FFFFFF; cursor: pointer; font-family: din-round,sans-serif; font-size: 15px; font-weight: 700; letter-spacing: .8px; line-height: 20px; margin: 0; outline: none; overflow: visible; padding: 13px 16px; text-align: center; text-transform: uppercase; touch-action: manipulation; transform: translateZ(0); transition: filter .2s; user-select: none; -webkit-user-select: none; vertical-align: middle; white-space: nowrap; width: 100%; margin-top: 1rem; position: relative; display: flex; align-items: center; justify-content: center; height: 50px; }
 .lif-form__submit::after { background-clip: padding-box; background-color: #1CB0F6; border: solid transparent; border-radius: 16px; border-width: 0 0 4px; bottom: -4px; content: ""; left: 0; position: absolute; right: 0; top: 0; z-index: -1; }
 .lif-form__submit::main, .lif-form__submit::focus { user-select: auto; }
 .lif-form__submit:hover:not(:disabled) { filter: brightness(1.1); -webkit-filter: brightness(1.1); }
 .lif-form__submit:disabled { cursor: auto; }
+.lif-form__submit__loader { position: absolute; }
+.lif-form__submit__loader.hidden { display: none; }
 .lif-form h2 { margin-top: 1rem; }
 .lif-form form .float-label-field { border: none; outline: none; position: relative; margin: 0 0 20px 0; padding: 0; box-sizing: border-box; }
 .lif-form form .float-label-field.focus label { color: #1899D6; }
@@ -15,6 +17,10 @@
 .lif-form__progressbar { background-color: #0d4c6a; border-radius: 13px; padding: 3px; }
 .lif-form__progressbar > div { background-color: #1CB0F6; width: 0%; height: 20px; border-radius: 10px; }
 .lif-form__stats { text-align: center; }
+.lif-form__row { margin-top: 1rem; }
 .lif-form__recaptpcha div:first-child { margin: auto; }
+.lif-form__msg { text-align: center; margin-top: 1rem; font-weight: bold; }
+.lif-form__msg__success { color: #78c800; }
+.lif-form__msg__error { color: #eb4b4d; }
 
 /*# sourceMappingURL=main.css.map */
